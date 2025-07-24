@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= item.name %>></title>
+  </head>
+  <body>
+    <h1><%= item.name %></h1>
+
+    <ul>
+      <!-- <li><strong>Category:</strong> <%= item.category.name %></li>
+      <li><strong>Size:</strong> <%= item.size %></li>
+      <li><strong>Color:</strong> <%= item.color %></li>
+      <li><strong>Brand:</strong> <%= item.brand %></li>
+      <li><strong>Price:</strong> $<%= item.price %></li>
+      <li><strong>Quantity in Stock:</strong> <%= item.quantity_in_stock %></li> -->
+    </ul>
+    <p><%= item.description %></p>
+    <p><a href="/categories/<%= item.category.id %>">← Back to Category</a></p>
+  </body>
+</html>
