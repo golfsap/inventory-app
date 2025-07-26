@@ -5,13 +5,28 @@ exports.getAllCategories = async (req, res) => {
     const categories = await db.getAllCategories();
     res.render("index", { title: "Home", categories });
   } catch (err) {
-    console.log("Error retrieving categories: ", err);
+    console.error("Error retrieving categories: ", err);
     res.status(500).send("Server error");
   }
 };
 
-exports.createCategory = (req, res) => {
-  res.send("This will create a new category");
+exports.renderNewCategoryForm = (req, res) => {
+  res.render("newCategory");
+};
+
+exports.createCategory = async (req, res) => {
+  const { name } = req.body;
+  if (!name || name.trim() === "") {
+    return res.status(400).send("Category name is required");
+  }
+
+  try {
+    await db.createCategory(name);
+    res.redirect("/");
+  } catch (err) {
+    console.error("Error creating category: ", err);
+    res.status(500).send("Server error");
+  }
 };
 
 exports.getCategoryById = async (req, res) => {
@@ -23,7 +38,6 @@ exports.getCategoryById = async (req, res) => {
     if (!category) {
       return res.status(404).send("Category not found");
     }
-    // console.log(category);
     res.render("category", { category, items: category.items || [] });
   } catch (err) {
     console.log("Error getting category: ", err);
@@ -31,10 +45,36 @@ exports.getCategoryById = async (req, res) => {
   }
 };
 
-exports.updateCategory = (req, res) => {
-  res.send("This will update the category");
+exports.updateCategory = async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  if (!name || name.trim() === "") {
+    return res.status(400).send("Category name is required");
+  }
+
+  try {
+    const updated = await db.updateCategory(id, name);
+    if (!updated) {
+      return res.status(404).send("Category not found");
+    }
+    res.redirect("/");
+  } catch (err) {
+    console.error("Error updating category:", err);
+    res.status(500).send("Server error");
+  }
 };
 
-exports.deleteCategory = (req, res) => {
-  res.send("This will delete the category");
+exports.deleteCategory = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleted = await db.deleteCategory(id);
+    if (!deleted) {
+      return res.status(404).send("Cannot delete category");
+    }
+    res.redirect("/");
+  } catch (err) {
+    console.error("Delete error:", err);
+    res.status(500).send("Server error");
+  }
 };
