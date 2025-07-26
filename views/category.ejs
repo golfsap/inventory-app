@@ -10,17 +10,21 @@
     <p>category description</p>
 
     <h2>Items</h2>
-    <%= if (items.length > 0) { %>
+    <% if (items.length > 0) { %>
     <ul>
       <% items.forEach(item => { %>
       <li>
-        <a href="/iitems/<%= item.id %>"><%= item.name %> </a>
+        <h3><a href="/items/<%= item.id %>"><%= item.name %> </a></h3>
+        <p><strong>Brand:</strong> <%= item.brand || 'N/A' %></p>
+        <p><strong>Size:</strong> <%= item.size || 'N/A' %></p>
+        <p><strong>Price:</strong> <%= item.price || 'N/A' %></p>
+        <p><strong>In Stock:</strong> <%= item.quantity_in_stock %></p>
       </li>
       <% }) %>
     </ul>
     <% } else {%>
     <p>No items found in this category.</p>
     <% } %>
-    <p><a href="/">Back to Categories</a></p>
+    <p><a href="/">← Back to Categories</a></p>
   </body>
 </html>
