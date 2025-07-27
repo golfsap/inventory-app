@@ -15,7 +15,23 @@ async function getItemById(id) {
   return result.rows[0];
 }
 
+async function addItem({
+  name,
+  brand,
+  size,
+  price,
+  quantity_in_stock,
+  category_id,
+}) {
+  const result = await pool.query(
+    "INSERT INTO items (name, brand, size, price, quantity_in_stock, category_id) VALUES ($1, $2, $3, $4, $5, $6)",
+    [name, brand, size, price, quantity_in_stock, category_id]
+  );
+  return result;
+}
+
 module.exports = {
   getAllItems,
   getItemById,
+  addItem,
 };

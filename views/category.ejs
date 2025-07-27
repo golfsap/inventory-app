@@ -27,6 +27,27 @@
     </form>
 
     <h2>Items</h2>
+    <button onclick="showAddItemForm()">Add Item</button>
+    <form
+      action=""
+      id="add-item-form"
+      style="display: none"
+      onsubmit="addItem(event, '<%= category.id %>')"
+    >
+      <h3>Add New Item</h3>
+      <input type="text" name="name" placeholder="Name" required />
+      <input type="text" name="brand" placeholder="Brand" />
+      <input type="text" name="size" placeholder="Size" />
+      <input type="number" name="price" placeholder="Price" step="0.01" />
+      <input
+        type="number"
+        name="quantity_in_stock"
+        placeholder="Quantity"
+        required
+      />
+      <button type="submit">Add</button>
+      <button type="button" onclick="hideAddItemForm()">Cancel</button>
+    </form>
     <% if (items.length > 0) { %>
     <ul>
       <% items.forEach(item => { %>
@@ -98,6 +119,46 @@
             alert("Error deleting");
           });
       }
+    }
+
+    function showAddItemForm() {
+      document.getElementById("add-item-form").style.display = "block";
+    }
+
+    function hideAddItemForm() {
+      document.getElementById("add-item-form").style.display = "none";
+    }
+
+    function addItem(e, categoryId) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        name: form.name.value,
+        brand: form.brand.value,
+        size: form.size.value,
+        price: form.price.value,
+        quantity_in_stock: form.quantity_in_stock.value,
+        category_id: categoryId,
+      };
+
+      fetch("/items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+        .then((res) => {
+          if (res.ok) {
+            location.reload();
+          } else {
+            return res
+              .text()
+              .then((msg) => alert("Failed to add item: " + msg));
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("Error adding item");
+        });
     }
   </script>
 </html>

@@ -11,7 +11,7 @@ categoryRouter.get("/", categoryController.getAllCategories);
 // Show new category form
 categoryRouter.get("/new", categoryController.renderNewCategoryForm);
 
-// Get a siingle category by ID
+// Get a single category by ID
 categoryRouter.get("/:id", categoryController.getCategoryById);
 
 // Update a category

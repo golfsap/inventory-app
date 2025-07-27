@@ -25,3 +25,35 @@ exports.getItemById = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+function sanitizeNumber(value) {
+  return value === "" || value === undefined ? null : Number(value);
+}
+
+exports.createItem = async (req, res) => {
+  const { name, brand, size, price, quantity_in_stock, category_id } = req.body;
+
+  if (!name || !category_id) {
+    return res.status(400).send("Name and category are required.");
+  }
+
+  const priceValue = sanitizeNumber(price);
+  const quantityValue = sanitizeNumber(quantity_in_stock);
+  try {
+    const result = await db.addItem({
+      name,
+      brand,
+      size,
+      price: priceValue,
+      quantity_in_stock: quantityValue,
+      category_id,
+    });
+    if (result.rowCount === 0) {
+      return res.status(404).send("Could not add item");
+    }
+    res.status(201).send("Item created");
+  } catch (err) {
+    console.error("Error adding item:", err);
+    res.status(500).send("Server error");
+  }
+};
