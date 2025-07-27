@@ -6,8 +6,25 @@
     <title><%= category.name %></title>
   </head>
   <body>
-    <h1>Category: <%= category.name %></h1>
-    <p>category description</p>
+    <h1>Category: <span id="category-name"><%= category.name %></span></h1>
+    <button onclick="showEditForm()">Edit category</button>
+    <button onClick="deleteCategory('<%= category.id %>')">Delete</button>
+
+    <form
+      id="edit-form"
+      style="display: none"
+      onsubmit="updateCategory(event, '<%= category.id %>')"
+    >
+      <input
+        type="text"
+        id="edit-name"
+        name="name"
+        placeholder="New category name"
+        required
+      />
+      <button type="submit">Save</button>
+      <button type="button" onclick="hideEditForm()">Cancel</button>
+    </form>
 
     <h2>Items</h2>
     <% if (items.length > 0) { %>
@@ -27,4 +44,60 @@
     <% } %>
     <p><a href="/">← Back to Categories</a></p>
   </body>
+  <script>
+    function showEditForm() {
+      document.getElementById("edit-form").style.display = "block";
+      document.getElementById("edit-name").value =
+        document.getElementById("category-name").textContent;
+    }
+
+    function hideEditForm() {
+      document.getElementById("edit-form").style.display = "none";
+    }
+
+    function updateCategory(e, id) {
+      e.preventDefault();
+      const newName = document.getElementById("edit-name").value.trim();
+      if (!newName) return alert("Category name cannot be empty.");
+
+      fetch(`/categories/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: newName }),
+      })
+        .then((res) => {
+          if (res.ok) {
+            document.getElementById("category-name").textContent = newName;
+            hideEditForm();
+          } else {
+            return res.text().then((msg) => alert("Update failed: " + msg));
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("Error updating category");
+        });
+    }
+
+    function deleteCategory(id) {
+      if (confirm("Are you sure you want to delete this category?")) {
+        fetch(`/categories/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => {
+            if (res.ok) {
+              window.location.href = "/";
+            } else {
+              return res.text().then((msg) => alert("Delete failed: " + msg));
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            alert("Error deleting");
+          });
+      }
+    }
+  </script>
 </html>

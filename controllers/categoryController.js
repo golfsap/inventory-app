@@ -58,7 +58,7 @@ exports.updateCategory = async (req, res) => {
     if (!updated) {
       return res.status(404).send("Category not found");
     }
-    res.redirect("/");
+    res.status(200).send("Updated");
   } catch (err) {
     console.error("Error updating category:", err);
     res.status(500).send("Server error");
@@ -72,7 +72,7 @@ exports.deleteCategory = async (req, res) => {
     if (!deleted) {
       return res.status(404).send("Cannot delete category");
     }
-    res.redirect("/");
+    res.status(200).send("Deleted");
   } catch (err) {
     console.error("Delete error:", err);
     res.status(500).send("Server error");

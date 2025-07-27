@@ -28,14 +28,17 @@ async function createCategory(name) {
 
 async function updateCategory(id, name) {
   const result = await pool.query(
-    "UPDATE categories SET name = $1 WHERE id = $2",
+    "UPDATE categories SET name = $1 WHERE id = $2 RETURNING *",
     [name, id]
   );
   return result.rows[0];
 }
 
 async function deleteCategory(id) {
-  const result = await pool.query("DELETE FROM categories WHERE id = $1", [id]);
+  const result = await pool.query(
+    "DELETE FROM categories WHERE id = $1 RETURNING *",
+    [id]
+  );
   return result.rows[0];
 }
 
