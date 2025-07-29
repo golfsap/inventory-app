@@ -112,12 +112,19 @@ exports.deleteItem = async (req, res) => {
   if (isNaN(id)) return res.status(400).send("Invalid item ID");
 
   try {
-    const result = db.deleteItem(id);
+    const item = await db.getItemById(id);
+    if (!item) {
+      return res.status(404).send("Item not found");
+    }
+
+    const categoryId = item.category_id;
+
+    const result = await db.deleteItem(id);
     if (result.rowCount === 0) {
       return res.status(404).send("Item not found");
     }
     // redirect back to the item category page
-    res.status(200).send("Deleted");
+    res.status(200).json({ redirectTo: `/categories/${categoryId}` });
   } catch (err) {
     console.error("Error deleting item:", err);
     res.status(500).send("Server error");

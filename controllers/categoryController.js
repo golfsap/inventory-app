@@ -67,16 +67,28 @@ exports.updateCategory = async (req, res) => {
 
 exports.deleteCategory = async (req, res) => {
   const { id } = req.params;
-  if (isNaN(id)) return res.status(400).send("Invalid item ID");
+  if (isNaN(id)) return res.status(400).send("Invalid category ID");
 
   try {
+    const category = await db.getCategoryById(id);
+    if (!category) {
+      return res.status(404).send("Category not found");
+    }
+
+    const itemsInCategory = category.items;
+    if (itemsInCategory.length > 0) {
+      return res
+        .status(400)
+        .send("This category still has items. Reassign or delete them first.");
+    }
+
     const deleted = await db.deleteCategory(id);
     if (!deleted) {
       return res.status(404).send("Cannot delete category");
     }
     res.status(200).send("Deleted");
   } catch (err) {
-    console.error("Delete error:", err);
+    console.error("Error deleting category:", err);
     res.status(500).send("Server error");
   }
 };

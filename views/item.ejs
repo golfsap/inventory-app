@@ -18,7 +18,11 @@
       <li><strong>Category:</strong> <%= item.category_name %></li>
     </ul>
     <!-- <p><%= item.description %></p> -->
-    <p><a href="/categories/<%= item.category_id %>">← Back to Category</a></p>
+    <p>
+      <a href="/categories/<%= item.category_id %>"
+        >← Back to <%= item.category_name %></a
+      >
+    </p>
   </body>
   <script>
     function deleteItem(id) {
@@ -27,15 +31,19 @@
           method: "DELETE",
         })
           .then((res) => {
-            if (res.ok) {
-              window.location.href = `/`;
-            } else {
-              return res.text().then((msg) => alert("Delete failed: " + msg));
+            if (!res.ok) {
+              return res.text().then((msg) => {
+                throw new Error(msg);
+              });
             }
+            return res.json();
+          })
+          .then(({ redirectTo }) => {
+            window.location.href = redirectTo;
           })
           .catch((err) => {
             console.error(err);
-            alert("Error deleting");
+            alert("Delete failed: " + err.message);
           });
       }
     }
