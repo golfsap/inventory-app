@@ -106,3 +106,20 @@ exports.updateItem = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+exports.deleteItem = async (req, res) => {
+  const { id } = req.params;
+  if (isNaN(id)) return res.status(400).send("Invalid item ID");
+
+  try {
+    const result = db.deleteItem(id);
+    if (result.rowCount === 0) {
+      return res.status(404).send("Item not found");
+    }
+    // redirect back to the item category page
+    res.status(200).send("Deleted");
+  } catch (err) {
+    console.error("Error deleting item:", err);
+    res.status(500).send("Server error");
+  }
+};

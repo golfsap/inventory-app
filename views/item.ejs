@@ -8,7 +8,7 @@
   <body>
     <h1><%= item.name %></h1>
     <a href="/items/<%= item.id %>/edit">Edit</a>
-
+    <button onclick="deleteItem('<%= item.id %>')">Delete</button>
     <ul>
       <li><strong>Brand:</strong> <%= item.brand %></li>
       <li><strong>Size:</strong> <%= item.size %></li>
@@ -20,4 +20,24 @@
     <!-- <p><%= item.description %></p> -->
     <p><a href="/categories/<%= item.category_id %>">← Back to Category</a></p>
   </body>
+  <script>
+    function deleteItem(id) {
+      if (confirm("Are you sure you want to delete this item?")) {
+        fetch(`/items/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => {
+            if (res.ok) {
+              window.location.href = `/`;
+            } else {
+              return res.text().then((msg) => alert("Delete failed: " + msg));
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            alert("Error deleting");
+          });
+      }
+    }
+  </script>
 </html>

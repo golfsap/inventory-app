@@ -67,6 +67,8 @@ exports.updateCategory = async (req, res) => {
 
 exports.deleteCategory = async (req, res) => {
   const { id } = req.params;
+  if (isNaN(id)) return res.status(400).send("Invalid item ID");
+
   try {
     const deleted = await db.deleteCategory(id);
     if (!deleted) {

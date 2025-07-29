@@ -17,4 +17,7 @@ itemRouter.get("/:id/edit", itemController.showEditForm);
 // Handle edit form (update item)
 itemRouter.post("/:id/update", itemController.updateItem);
 
+// Delete item
+itemRouter.delete("/:id", itemController.deleteItem);
+
 module.exports = itemRouter;
