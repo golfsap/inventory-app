@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS items (
     quantity_in_stock INTEGER DEFAULT 0
 );
 
--- Clear old date
+-- Clear old data
 DELETE FROM items;
 DELETE FROM categories;
 

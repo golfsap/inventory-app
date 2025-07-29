@@ -1,0 +1,42 @@
+<h1>Edit Item</h1>
+<form action="/items/<%= item.id %>/update" method="POST">
+  <label
+    >Name:
+    <input type="text" name="name" value="<%= item.name %>" required /></label
+  ><br />
+  <label
+    >Brand:
+    <input type="text" name="brand" value="<%= item.brand || '' %>" /></label
+  ><br />
+  <label
+    >Size:
+    <input type="text" name="size" value="<%= item.size || '' %>" /></label
+  ><br />
+  <label
+    >Price:
+    <input
+      type="number"
+      name="price"
+      value="<%= item.price || '' %>"
+      step="0.01" /></label
+  ><br />
+  <label
+    >Quantity in stock:
+    <input
+      type="number"
+      name="quantity_in_stock"
+      value="<%= item.quantity_in_stock || 0 %>"
+    /> </label
+  ><br />
+  <label
+    >Category:
+    <select name="category_id" id="category">
+        <% categories.forEach(category => { %>
+            <option value="<%= category.id %>" <%= category.id === item.category_id ? 'selected' : '' %>>
+                <%= category.name %>
+            </option>
+      <%  }) %>
+    </select> </label
+  ><br />
+  <button type="submit">Update Item</button>
+</form>

@@ -7,14 +7,15 @@
   </head>
   <body>
     <h1><%= item.name %></h1>
+    <a href="/items/<%= item.id %>/edit">Edit</a>
 
     <ul>
-      <li><strong>Category:</strong> <%= item.category_id %></li>
       <li><strong>Brand:</strong> <%= item.brand %></li>
       <li><strong>Size:</strong> <%= item.size %></li>
 
       <li><strong>Price:</strong> $<%= item.price %></li>
       <li><strong>Quantity in Stock:</strong> <%= item.quantity_in_stock %></li>
+      <li><strong>Category:</strong> <%= item.category_name %></li>
     </ul>
     <!-- <p><%= item.description %></p> -->
     <p><a href="/categories/<%= item.category_id %>">← Back to Category</a></p>
