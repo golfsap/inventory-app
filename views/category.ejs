@@ -7,64 +7,67 @@
     <link rel="stylesheet" href="/styles/style.css" />
   </head>
   <body>
-    <h1>Category: <span id="category-name"><%= category.name %></span></h1>
-    <button onclick="showEditForm()">Edit category</button>
-    <button onClick="deleteCategory('<%= category.id %>')">Delete</button>
-
-    <form
-      id="edit-form"
-      style="display: none"
-      onsubmit="updateCategory(event, '<%= category.id %>')"
-    >
-      <input
-        type="text"
-        id="edit-name"
-        name="name"
-        placeholder="New category name"
-        required
-      />
-      <button type="submit">Save</button>
-      <button type="button" onclick="hideEditForm()">Cancel</button>
-    </form>
-
-    <h2>Items</h2>
-    <button onclick="showAddItemForm()">Add Item</button>
-    <form
-      action=""
-      id="add-item-form"
-      style="display: none"
-      onsubmit="addItem(event, '<%= category.id %>')"
-    >
-      <h3>Add New Item</h3>
-      <input type="text" name="name" placeholder="Name" required />
-      <input type="text" name="brand" placeholder="Brand" />
-      <input type="text" name="size" placeholder="Size" />
-      <input type="number" name="price" placeholder="Price" step="0.01" />
-      <input
-        type="number"
-        name="quantity_in_stock"
-        placeholder="Quantity"
-        required
-      />
-      <button type="submit">Add</button>
-      <button type="button" onclick="hideAddItemForm()">Cancel</button>
-    </form>
-    <% if (items.length > 0) { %>
-    <ul>
-      <% items.forEach(item => { %>
-      <li>
-        <h3><a href="/items/<%= item.id %>"><%= item.name %> </a></h3>
-        <p><strong>Brand:</strong> <%= item.brand || 'N/A' %></p>
-        <p><strong>Size:</strong> <%= item.size || 'N/A' %></p>
-        <p><strong>Price:</strong> <%= item.price || 'N/A' %></p>
-        <p><strong>In Stock:</strong> <%= item.quantity_in_stock %></p>
-      </li>
-      <% }) %>
-    </ul>
-    <% } else {%>
-    <p>No items found in this category.</p>
-    <% } %>
-    <p><a href="/">← Back to Categories</a></p>
+    <div class="container">
+      <%- include('partials/navbar') %>
+      <h1>Category: <span id="category-name"><%= category.name %></span></h1>
+      <button onclick="showEditForm()">Edit category</button>
+      <button onClick="deleteCategory('<%= category.id %>')">Delete</button>
+      <form
+        id="edit-form"
+        style="display: none"
+        onsubmit="updateCategory(event, '<%= category.id %>')"
+      >
+        <input
+          type="text"
+          id="edit-name"
+          name="name"
+          placeholder="New category name"
+          required
+        />
+        <button type="submit">Save</button>
+        <button type="button" onclick="hideEditForm()">Cancel</button>
+      </form>
+      <h2>Items</h2>
+      <button onclick="showAddItemForm()">Add Item</button>
+      <form
+        action=""
+        id="add-item-form"
+        style="display: none"
+        onsubmit="addItem(event, '<%= category.id %>')"
+      >
+        <h3>Add New Item</h3>
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="text" name="brand" placeholder="Brand" />
+        <input type="text" name="size" placeholder="Size" />
+        <input type="number" name="price" placeholder="Price" step="0.01" />
+        <input
+          type="number"
+          name="quantity_in_stock"
+          placeholder="Quantity"
+          required
+        />
+        <button type="submit">Add</button>
+        <button type="button" onclick="hideAddItemForm()">Cancel</button>
+      </form>
+      <% if (items.length > 0) { %>
+      <ul>
+        <% items.forEach(item => { %>
+        <div class="card">
+          <li>
+            <h3><a href="/items/<%= item.id %>"><%= item.name %> </a></h3>
+            <p><strong>Brand:</strong> <%= item.brand || 'N/A' %></p>
+            <p><strong>Size:</strong> <%= item.size || 'N/A' %></p>
+            <p><strong>Price:</strong> <%= item.price || 'N/A' %></p>
+            <p><strong>In Stock:</strong> <%= item.quantity_in_stock %></p>
+          </li>
+        </div>
+        <% }) %>
+      </ul>
+      <% } else {%>
+      <p>No items found in this category.</p>
+      <% } %>
+      <p><a href="/">← Back to Categories</a></p>
+    </div>
   </body>
   <script>
     function showEditForm() {

@@ -7,18 +7,21 @@
     <link rel="stylesheet" href="/styles/style.css" />
   </head>
   <body>
-    <h1>Inventory app</h1>
-    <div class="categoriesSection">
-      <h2>Categories</h2>
-      <ul>
-        <% categories.forEach(category => { %>
-        <li>
-          <a href="/categories/<%= category.id %>"> <%= category.name %> </a>
-        </li>
-        <% }) %>
-      </ul>
-      <a href="/categories/new">Add new category</a>
+    <div class="container">
+      <%- include('partials/navbar') %>
+      <h1>Inventory app</h1>
+      <div class="categoriesSection">
+        <h2>Categories</h2>
+        <ul>
+          <% categories.forEach(category => { %>
+          <li>
+            <a href="/categories/<%= category.id %>"> <%= category.name %> </a>
+          </li>
+          <% }) %>
+        </ul>
+        <a href="/categories/new">Add new category</a>
+      </div>
+      <a href="/items">View all items</a>
     </div>
-    <a href="/items">View all items</a>
   </body>
 </html>

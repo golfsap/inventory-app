@@ -1,6 +1,10 @@
-/* :root {
-
-} */
+:root {
+  --background-color: #f9fafb;
+  --blue-link-color: #2563eb;
+  --blue-darker-color: #1d4ed8;
+  --header-color: #1f2937;
+  --light-grey-color: #e5e7eb;
+}
 
 * {
   margin: 0;
@@ -11,17 +15,17 @@
 body {
   margin: 2rem;
   font-family: sans-serif;
-  background-color: #f9fafb;
+  background-color: var(--background-color);
   color: #333;
 }
 
 h1,
 h2 {
-  color: #1f2937;
+  color: var(--header-color);
 }
 
 a {
-  color: #2563eb;
+  color: var(--blue-link-color);
   text-decoration: none;
 }
 a:hover {
@@ -30,14 +34,14 @@ a:hover {
 
 button {
   padding: 0.5rem 1rem;
-  background-color: #2563eb;
+  background-color: var(--blue-link-color);
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 button:hover {
-  background-color: #1d4ed8;
+  background-color: var(--blue-darker-color);
 }
 
 .container {
@@ -51,4 +55,20 @@ button:hover {
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   margin-bottom: 1rem;
+}
+
+.navbar {
+  display: flex;
+  background-color: var(--blue-darker-color);
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+.navbar a {
+  color: var(--light-grey-color);
+}
+
+ul li {
+  list-style: none;
 }

@@ -4,38 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
+    <link rel="stylesheet" href="/styles/style.css" />
   </head>
   <body>
-    <h1>All Items</h1>
-    <% if (items.length > 0) { %>
-    <table border="1" cellpadding="8" cellspacing="0">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Brand</th>
-          <th>Category</th>
-          <th>Size</th>
-          <th>Price</th>
-          <th>In Stock</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% items.forEach(item => { %>
-        <tr>
-          <td><a href="/items/<%= item.id %>"><%= item.name %></a></td>
-          <td><%= item.brand || "-" %></td>
-          <td><%= item.category_name || "N/A" %></td>
-          <td><%= item.size || "-" %></td>
-          <td>$<%= item.price ? item.price : "0.00" %></td>
-          <td><%= item.quantity_in_stock %></td>
-        </tr>
-        <% }) %>
-      </tbody>
-    </table>
-    <% } else { %>
-    <p>No items available.</p>
-    <% } %>
-
-    <p><a href="/">← Back to Home</a></p>
+    <div class="container">
+      <%- include('partials/navbar') %>
+      <h1>All Items</h1>
+      <% if (items.length > 0) { %>
+      <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>In Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% items.forEach(item => { %>
+          <tr>
+            <td><a href="/items/<%= item.id %>"><%= item.name %></a></td>
+            <td><%= item.brand || "-" %></td>
+            <td><%= item.category_name || "N/A" %></td>
+            <td><%= item.size || "-" %></td>
+            <td>$<%= item.price ? item.price : "0.00" %></td>
+            <td><%= item.quantity_in_stock %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <p>No items available.</p>
+      <% } %>
+      <p><a href="/">← Back to Home</a></p>
+    </div>
   </body>
 </html>
