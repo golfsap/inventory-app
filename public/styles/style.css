@@ -191,3 +191,20 @@ strong {
   margin-top: 0.5rem;
   /* color: black; */
 }
+.bottom-link {
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+thead {
+  background-color: var(--light-grey-color);
+}
