@@ -9,20 +9,24 @@
   <body>
     <div class="container">
       <%- include('partials/navbar') %>
-      <div class="card">
-        <h1><%= item.name %></h1>
 
+      <div class="item-title">
+        <h2><%= item.name %></h2>
+      </div>
+      <div class="card">
         <ul>
-          <li><strong>Brand:</strong> <%= item.brand %></li>
-          <li><strong>Size:</strong> <%= item.size %></li>
-          <li><strong>Price:</strong> $<%= item.price %></li>
+          <li><strong>Brand:</strong> <%= item.brand || '-' %></li>
+          <li><strong>Size:</strong> <%= item.size || '-' %></li>
+          <li><strong>Price:</strong> <%= item.price || '-' %></li>
           <li>
             <strong>Quantity in Stock:</strong> <%= item.quantity_in_stock %>
           </li>
           <li><strong>Category:</strong> <%= item.category_name %></li>
         </ul>
-        <a href="/items/<%= item.id %>/edit">Edit</a>
-        <button onclick="deleteItem('<%= item.id %>')">Delete</button>
+        <div class="edit-item-section">
+          <a href="/items/<%= item.id %>/edit">Edit</a>
+          <button onclick="deleteItem('<%= item.id %>')">Delete</button>
+        </div>
       </div>
       <p>
         <a href="/categories/<%= item.category_id %>"

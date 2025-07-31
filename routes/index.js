@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const indexRouter = Router();
-const categoryController = require("../controllers/categoryController");
+const homeController = require("../controllers/homeController");
 
-indexRouter.get("/", categoryController.getAllCategories);
+indexRouter.get("/", homeController.homePage);
 
 const categoryRoutes = require("./categories");
 const itemRoutes = require("./items");

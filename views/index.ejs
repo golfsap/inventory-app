@@ -9,19 +9,34 @@
   <body>
     <div class="container">
       <%- include('partials/navbar') %>
-      <h1>Inventory app</h1>
+      <h1 class="title">Clothing Inventory app</h1>
+      <div class="dashboard-container">
+        <h2>Dashboard</h2>
+        <p>Total Categories: <%= categories.length %></p>
+        <p>Total Items: <%= items.length %></p>
+
+        <h3>Low Stock Items:</h3>
+        <ul class="list">
+          <% lowStockItems.forEach(item => { %>
+          <li>
+            <a href="/items/<%= item.id %>"><%= item.name %></a> - <%=
+            item.quantity_in_stock %> left
+          </li>
+          <% }) %>
+        </ul>
+      </div>
       <div class="categoriesSection">
-        <h2>Categories</h2>
-        <ul>
+        <h2>All Categories</h2>
+        <ul class="list">
           <% categories.forEach(category => { %>
           <li>
             <a href="/categories/<%= category.id %>"> <%= category.name %> </a>
           </li>
           <% }) %>
         </ul>
-        <a href="/categories/new">Add new category</a>
+        <a class="add-link" href="/categories/new">Add new category</a>
       </div>
-      <a href="/items">View all items</a>
+      <!-- <a href="/items">View all items</a> -->
     </div>
   </body>
 </html>

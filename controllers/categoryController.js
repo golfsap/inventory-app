@@ -3,7 +3,7 @@ const db = require("../db/categoryQueries");
 exports.getAllCategories = async (req, res) => {
   try {
     const categories = await db.getAllCategories();
-    res.render("index", { title: "Home", categories });
+    res.render("allCategories", { categories });
   } catch (err) {
     console.error("Error retrieving categories: ", err);
     res.status(500).send("Server error");
