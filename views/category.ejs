@@ -77,12 +77,11 @@
         <% }) %>
       </ul>
       <% } else {%>
-      <p>No items found in this category.</p>
+      <p class="no-item-para">No items found in this category.</p>
       <% } %>
       <p><a href="/categories">← Back to Categories</a></p>
     </div>
-  </body>
-  <script>
+    <script>
     function showEditForm() {
       document.getElementById("edit-form").style.display = "flex";
       document.getElementById("edit-name").value =
@@ -98,12 +97,15 @@
       const newName = document.getElementById("edit-name").value.trim();
       if (!newName) return alert("Category name cannot be empty.");
 
+      const password = prompt("Enter admin password to confirm update:");
+      if (!password) return;
+
       fetch(`/categories/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name: newName }),
+        body: JSON.stringify({ name: newName, adminPassword: password }),
       })
         .then((res) => {
           if (res.ok) {
@@ -121,8 +123,13 @@
 
     function deleteCategory(id) {
       if (confirm("Are you sure you want to delete this category?")) {
+        const password = prompt("Enter admin password to confirm deletion:");
+        if (!password) return;
+
         fetch(`/categories/${id}`, {
           method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ adminPassword: password }),
         })
           .then((res) => {
             if (res.ok) {
@@ -178,4 +185,5 @@
         });
     }
   </script>
+  </body>
 </html>

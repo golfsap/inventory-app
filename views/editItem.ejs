@@ -8,19 +8,16 @@
 </head>
 <body>
     <div class="container">
-        <%- include('partials/navbar') %>
-        <h1>Edit Item</h1>
-        <form action="/items/<%= item.id %>/update" method="POST">
-          <label for="name">Name:</label>
-            <input id="name" type="text" name="name" value="<%= item.name %>" required />
-          <label for="brand">Brand:</label>
-        
+      <%- include('partials/navbar') %>
+       <h1>Edit Item</h1>
+      <form id="edit-form">
+        <label for="name">Name:</label>
+        <input id="name" type="text" name="name" value="<%= item.name %>" required />
+        <label for="brand">Brand:</label>
         <input id="brand" type="text" name="brand" value="<%= item.brand || '' %>" />
-          <label for="size">Size:</label>
-        
+        <label for="size">Size:</label>
         <input id="size" type="text" name="size" value="<%= item.size || '' %>" />
-          <label for="price">Price:</label>
-        
+        <label for="price">Price:</label>
         <input
         id="price"
           type="number"
@@ -28,25 +25,62 @@
           value="<%= item.price || '' %>"
           step="0.01" />
           <label id="quantity">Quantity in stock</label>
-       
         <input
         id="quantity"
           type="number"
           name="quantity_in_stock"
           value="<%= item.quantity_in_stock || 0 %>"
         /> 
-          <label for="category">Category:</label>
+        <label for="category">Category:</label>
         <select name="category_id" id="category">
-            <% categories.forEach(category => { %>
-                <option value="<%= category.id %>" <%= category.id === item.category_id ? 'selected' : '' %>>
-                    <%= category.name %>
-                </option>
-          <%  }) %>
+        <% categories.forEach(category => { %>
+            <option value="<%= category.id %>" <%= category.id === item.category_id ? 'selected' : '' %>>
+              <%= category.name %>
+            </option>
+        <%  }) %>
         </select> 
-          <button type="submit">Update Item</button>
+        <button type="submit">Update Item</button>
         </form>
         <p class="cancel-link"><a  href="/items/<%= item.id %>">Cancel</a></p>
     </div>
+   <script>
+    document.getElementById("edit-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      form = e.target;
+
+      const password = prompt("Enter admin password to update item:");
+      if (!password) return;
+
+      const data = {
+        name: form.name.value,
+        brand: form.brand.value,
+      size: form.size.value,
+      price: form.price.value,
+      quantity_in_stock: form.quantity_in_stock.value,
+      category_id: form.category_id.value,
+      adminPassword: password,
+      };
+
+      try {
+        const res = await fetch(`/items/<%= item.id %>/update`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        if (res.ok) {
+          window.location.href = `/items/<%= item.id %>`;
+        } else {
+          const msg = await res.text();
+          alert("Update failed: " + msg);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error updating item");
+      }
+    });
+  </script> 
 </body>
 </html>
 

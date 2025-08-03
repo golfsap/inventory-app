@@ -34,29 +34,36 @@
         >
       </p>
     </div>
-  </body>
-  <script>
-    function deleteItem(id) {
-      if (confirm("Are you sure you want to delete this item?")) {
-        fetch(`/items/${id}`, {
-          method: "DELETE",
-        })
-          .then((res) => {
-            if (!res.ok) {
-              return res.text().then((msg) => {
-                throw new Error(msg);
-              });
-            }
-            return res.json();
+    <script>
+      function deleteItem(id) {
+        if (confirm("Are you sure you want to delete this item?")) {
+          const password = prompt("Enter admin password to confirm deletion:");
+          if (!password) return;
+
+          fetch(`/items/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ adminPassword: password }),
           })
-          .then(({ redirectTo }) => {
-            window.location.href = redirectTo;
-          })
-          .catch((err) => {
-            console.error(err);
-            alert("Delete failed: " + err.message);
-          });
+            .then((res) => {
+              if (!res.ok) {
+                return res.text().then((msg) => {
+                  throw new Error(msg);
+                });
+              }
+              return res.json();
+            })
+            .then(({ redirectTo }) => {
+              window.location.href = redirectTo;
+            })
+            .catch((err) => {
+              console.error(err);
+              alert("Delete failed: " + err.message);
+            });
+        }
       }
-    }
-  </script>
+    </script>
+  </body>
 </html>

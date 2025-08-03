@@ -1,3 +1,4 @@
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const db = require("../db/itemQueries");
 const categoryDb = require("../db/categoryQueries");
 
@@ -79,10 +80,21 @@ exports.showEditForm = async (req, res) => {
 
 exports.updateItem = async (req, res) => {
   const { id } = req.params;
-  const { name, brand, size, price, quantity_in_stock, category_id } = req.body;
+  const {
+    name,
+    brand,
+    size,
+    price,
+    quantity_in_stock,
+    category_id,
+    adminPassword,
+  } = req.body;
 
   if (!name || !category_id) {
     return res.status(400).send("Name and category are required.");
+  }
+  if (adminPassword !== ADMIN_PASSWORD) {
+    return res.status(403).send("Invalid admin password");
   }
 
   const priceValue = sanitizeNumber(price);
@@ -100,7 +112,8 @@ exports.updateItem = async (req, res) => {
     if (result.rowCount === 0) {
       return res.status(404).send("Item not found or not updated");
     }
-    res.redirect(`/items/${id}`);
+    res.status(200).send("Updated");
+    // res.redirect(`/items/${id}`);
   } catch (err) {
     console.error("Error updating item:", err);
     res.status(500).send("Server error");
@@ -109,6 +122,11 @@ exports.updateItem = async (req, res) => {
 
 exports.deleteItem = async (req, res) => {
   const { id } = req.params;
+  const { adminPassword } = req.body;
+
+  if (adminPassword !== ADMIN_PASSWORD) {
+    return res.status(403).send("Invalid admin password");
+  }
   if (isNaN(id)) return res.status(400).send("Invalid item ID");
 
   try {

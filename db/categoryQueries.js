@@ -23,7 +23,11 @@ async function getCategoryById(id) {
 }
 
 async function createCategory(name) {
-  await pool.query("INSERT INTO categories (name) VALUES ($1)", [name]);
+  const result = await pool.query(
+    "INSERT INTO categories (name) VALUES ($1) RETURNING id",
+    [name]
+  );
+  return result.rows[0];
 }
 
 async function updateCategory(id, name) {

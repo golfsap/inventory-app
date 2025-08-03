@@ -1,3 +1,4 @@
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const db = require("../db/categoryQueries");
 
 exports.getAllCategories = async (req, res) => {
@@ -21,8 +22,11 @@ exports.createCategory = async (req, res) => {
   }
 
   try {
-    await db.createCategory(name);
-    res.redirect("/");
+    const newCategory = await db.createCategory(name);
+    if (!newCategory) {
+      return res.status(500).send("Category creation failed");
+    }
+    res.redirect(`/categories/${newCategory.id}`);
   } catch (err) {
     console.error("Error creating category: ", err);
     res.status(500).send("Server error");
@@ -47,10 +51,13 @@ exports.getCategoryById = async (req, res) => {
 
 exports.updateCategory = async (req, res) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { name, adminPassword } = req.body;
 
   if (!name || name.trim() === "") {
     return res.status(400).send("Category name is required");
+  }
+  if (adminPassword !== ADMIN_PASSWORD) {
+    return res.status(403).send("Invalid admin password");
   }
 
   try {
@@ -67,6 +74,11 @@ exports.updateCategory = async (req, res) => {
 
 exports.deleteCategory = async (req, res) => {
   const { id } = req.params;
+  const { adminPassword } = req.body;
+
+  if (adminPassword !== ADMIN_PASSWORD) {
+    return res.status(403).send("Invalid admin password");
+  }
   if (isNaN(id)) return res.status(400).send("Invalid category ID");
 
   try {
